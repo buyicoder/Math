@@ -9,8 +9,6 @@
     // 目标向量 x（标准坐标）
     xx: 2,
     xy: 1,
-    // 当前拖动对象：'u' | 'v' | 'x'
-    draggingTarget: null,
   };
 
   function det2(a, b, c, d) {
@@ -151,32 +149,20 @@
     updateSideDisplays();
   }
 
-  function setDraggingTarget(target) {
-    state.draggingTarget = target;
-  }
-
   function updateFromDrag(logicX, logicY) {
     // 限制范围，避免拖得太远
     const clamp = (v) => Math.max(-6, Math.min(6, v));
     const x = clamp(logicX);
     const y = clamp(logicY);
-    if (state.draggingTarget === "u") {
-      state.ux = x;
-      state.uy = y;
-    } else if (state.draggingTarget === "v") {
-      state.vx = x;
-      state.vy = y;
-    } else if (state.draggingTarget === "x") {
-      state.xx = x;
-      state.xy = y;
-    }
+    // 当前版本：第 5 课只拖动 x
+    state.xx = x;
+    state.xy = y;
   }
 
   window.Lesson5 = {
     id: "lesson5",
     state,
     draw,
-    setDraggingTarget,
     updateFromDrag,
   };
 })();

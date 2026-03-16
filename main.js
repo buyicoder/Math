@@ -216,22 +216,36 @@ function drawLesson2Scene() {
   const auEnd = logicToScreen(auX, auY);
   const comboEnd = logicToScreen(auX + bvX, auY + bvY); // 理论上等于 wEnd
 
-  // 用半透明虚线画出“先 a·u 再 b·v”的路径
-  ctx.setLineDash([6, 4]);
-  ctx.lineWidth = 1.5;
+  // 用半透明虚线画出“先 a·u 再 b·v”的路径，并带有箭头
+  function drawDashedArrow(start, end, color) {
+    ctx.setLineDash([6, 4]);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const angle = Math.atan2(start.y - end.y, end.x - start.x);
+    const headLen = 8;
+    const hx1 = end.x - headLen * Math.cos(angle - Math.PI / 7);
+    const hy1 = end.y + headLen * Math.sin(angle - Math.PI / 7);
+    const hx2 = end.x - headLen * Math.cos(angle + Math.PI / 7);
+    const hy2 = end.y + headLen * Math.sin(angle + Math.PI / 7);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(end.x, end.y);
+    ctx.lineTo(hx1, hy1);
+    ctx.lineTo(hx2, hy2);
+    ctx.closePath();
+    ctx.fill();
+  }
+
   // a·u 段（蓝色淡色）
-  ctx.strokeStyle = "rgba(56, 189, 248, 0.5)";
-  ctx.beginPath();
-  ctx.moveTo(origin.x, origin.y);
-  ctx.lineTo(auEnd.x, auEnd.y);
-  ctx.stroke();
+  drawDashedArrow(origin, auEnd, "rgba(56, 189, 248, 0.5)");
   // 从 a·u 终点走 b·v 段（橙色淡色）
-  ctx.strokeStyle = "rgba(251, 146, 60, 0.5)";
-  ctx.beginPath();
-  ctx.moveTo(auEnd.x, auEnd.y);
-  ctx.lineTo(comboEnd.x, comboEnd.y);
-  ctx.stroke();
-  ctx.setLineDash([]);
+  drawDashedArrow(auEnd, comboEnd, "rgba(251, 146, 60, 0.5)");
 
   // 绘制 u（蓝色）
   ctx.strokeStyle = "#38bdf8";

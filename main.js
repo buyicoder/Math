@@ -208,6 +208,31 @@ function drawLesson2Scene() {
   const wy = aCoeff * uy + bCoeff * vy2;
   const wEnd = logicToScreen(wx, wy);
 
+  // 组合路径：先走 a·u 再走 b·v（显示“组合”的过程）
+  const auX = aCoeff * ux;
+  const auY = aCoeff * uy;
+  const bvX = bCoeff * vx2;
+  const bvY = bCoeff * vy2;
+  const auEnd = logicToScreen(auX, auY);
+  const comboEnd = logicToScreen(auX + bvX, auY + bvY); // 理论上等于 wEnd
+
+  // 用半透明虚线画出“先 a·u 再 b·v”的路径
+  ctx.setLineDash([6, 4]);
+  ctx.lineWidth = 1.5;
+  // a·u 段（蓝色淡色）
+  ctx.strokeStyle = "rgba(56, 189, 248, 0.5)";
+  ctx.beginPath();
+  ctx.moveTo(origin.x, origin.y);
+  ctx.lineTo(auEnd.x, auEnd.y);
+  ctx.stroke();
+  // 从 a·u 终点走 b·v 段（橙色淡色）
+  ctx.strokeStyle = "rgba(251, 146, 60, 0.5)";
+  ctx.beginPath();
+  ctx.moveTo(auEnd.x, auEnd.y);
+  ctx.lineTo(comboEnd.x, comboEnd.y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
   // 绘制 u（蓝色）
   ctx.strokeStyle = "#38bdf8";
   ctx.fillStyle = "#38bdf8";

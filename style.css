@@ -59,6 +59,34 @@ body {
   color: #9ca3af;
 }
 
+.lesson-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.lesson-tab {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  font-size: 13px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lesson-tab.active {
+  border-color: #38bdf8;
+  background: radial-gradient(circle at top left, #0ea5e9, #4f46e5);
+  color: #f9fafb;
+  box-shadow: 0 10px 20px rgba(56, 189, 248, 0.4);
+}
+
+.lesson-tab:hover:not(.active) {
+  border-color: #38bdf8;
+}
+
 .main {
   display: grid;
   grid-template-columns: 1.1fr 1.3fr;
@@ -71,6 +99,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.lesson-section {
+  display: none;
+}
+
+.lesson-section.active {
+  display: block;
 }
 
 .card,

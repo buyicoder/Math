@@ -67,15 +67,40 @@ function drawGrid() {
   }
   ctx.stroke();
 
-  // 坐标轴
+  // 坐标轴（带箭头）
   ctx.strokeStyle = "#4b5563";
   ctx.lineWidth = 1.5;
   ctx.beginPath();
+  // x 轴线
   ctx.moveTo(0, origin.y);
-  ctx.lineTo(width, origin.y);
-  ctx.moveTo(origin.x, 0);
-  ctx.lineTo(origin.x, height);
+  ctx.lineTo(width - 12, origin.y); // 留出箭头空间
+  // y 轴线
+  ctx.moveTo(origin.x, height - 12);
+  ctx.lineTo(origin.x, 0);
   ctx.stroke();
+
+  // x 轴箭头
+  ctx.beginPath();
+  ctx.moveTo(width - 12, origin.y);
+  ctx.lineTo(width - 18, origin.y - 4);
+  ctx.lineTo(width - 18, origin.y + 4);
+  ctx.closePath();
+  ctx.fillStyle = "#4b5563";
+  ctx.fill();
+
+  // y 轴箭头
+  ctx.beginPath();
+  ctx.moveTo(origin.x, 0);
+  ctx.lineTo(origin.x - 4, 8);
+  ctx.lineTo(origin.x + 4, 8);
+  ctx.closePath();
+  ctx.fill();
+
+  // 轴标签 x, y
+  ctx.fillStyle = "#9ca3af";
+  ctx.font = "12px system-ui";
+  ctx.fillText("x", width - 18, origin.y - 8);
+  ctx.fillText("y", origin.x + 8, 14);
 }
 
 function drawVector() {
@@ -228,78 +253,143 @@ canvas.addEventListener("touchend", () => {
   dragging = false;
 });
 
-// 小测逻辑
-const correctAnswers = {
-  q1: "B",
-  q2: "B",
-  q3: "B",
-};
+// 课程切换与小测逻辑
+(function setupLessons() {
+  const lessonTabs = document.querySelectorAll(".lesson-tab");
+  const lessonSections = document.querySelectorAll(".lesson-section");
+  const quizLessons = document.querySelectorAll(".quiz-lesson");
+  const nextLessonBtn = document.getElementById("nextLessonBtn");
 
-const explanations = {
-  q1: "x = -1 表示向左 1，y = 2 表示向上 2，所以是“向左 1，向上 2”。",
-  q2: "|v| = √(6² + 8²) = √(36 + 64) = √100 = 10。",
-  q3: "“往东北方向开车，每小时 60 公里”同时有大小和方向，是典型向量。",
-};
+  let currentLessonId = "lesson1";
 
-const quizItems = document.querySelectorAll(".quiz-item");
-const nextLessonBtn = document.getElementById("nextLessonBtn");
+  function setActiveLesson(lessonId) {
+    currentLessonId = lessonId;
 
-quizItems.forEach((item) => {
-  const qid = item.getAttribute("data-question");
-  const buttons = item.querySelectorAll("button");
-  const feedback = item.querySelector(".quiz-feedback");
+    // tab 高亮
+    lessonTabs.forEach((tab) => {
+      const id = tab.getAttribute("data-lesson-id");
+      tab.classList.toggle("active", id === lessonId);
+    });
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const userAnswer = btn.getAttribute("data-answer");
+    // 左侧讲解内容切换
+    lessonSections.forEach((section) => {
+      const id = section.getAttribute("data-lesson-id");
+      section.classList.toggle("active", id === lessonId);
+    });
 
-      // 清除旧状态
-      buttons.forEach((b) => b.classList.remove("correct", "wrong"));
-      feedback.classList.remove("ok", "bad");
+    // 小测内容切换
+    quizLessons.forEach((ql) => {
+      const id = ql.getAttribute("data-lesson-id");
+      ql.style.display = id === lessonId ? "block" : "none";
+    });
 
-      if (userAnswer === correctAnswers[qid]) {
-        btn.classList.add("correct");
-        feedback.textContent = "✅ 回答正确！" + " " + explanations[qid];
-        feedback.classList.add("ok");
-      } else {
-        btn.classList.add("wrong");
-        feedback.textContent = "❌ 这不是最合适的选项，再想一想。";
-        feedback.classList.add("bad");
-      }
+    // 更新画布标题/提示（先简单区分 1、2 课）
+    const canvasTitle = document.getElementById("canvasTitle");
+    const canvasSubtitle = document.getElementById("canvasSubtitle");
+    const hint = document.querySelector(".hint");
 
-      checkAllCorrect();
+    if (lessonId === "lesson1") {
+      canvasTitle.textContent = "拖动箭头，感受向量";
+      canvasSubtitle.textContent = "从原点出发的箭头就是一个向量 v。";
+      hint.textContent =
+        "提示：在坐标系中拖动箭头尖端（鼠标左键按住移动），看看 v 和 |v| 如何变化。";
+    } else if (lessonId === "lesson2") {
+      canvasTitle.textContent = "两支向量的加法与数乘";
+      canvasSubtitle.textContent =
+        "在这里，我们将看到 u、v 以及它们的和 u + v 和线性组合。";
+      hint.textContent =
+        "提示：第 2 课的具体交互即将上线，现在可以先阅读左侧讲解内容。";
+    }
+  }
+
+  lessonTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const lessonId = tab.getAttribute("data-lesson-id");
+      setActiveLesson(lessonId);
     });
   });
-});
 
-function checkAllCorrect() {
-  let allCorrect = true;
+  // 第 1 课小测逻辑
+  const correctAnswers = {
+    q1: "B",
+    q2: "B",
+    q3: "B",
+  };
+
+  const explanations = {
+    q1: "x = -1 表示向左 1，y = 2 表示向上 2，所以是“向左 1，向上 2”。",
+    q2: "|v| = √(6² + 8²) = √(36 + 64) = √100 = 10。",
+    q3: "“往东北方向开车，每小时 60 公里”同时有大小和方向，是典型向量。",
+  };
+
+  const quizItems = document.querySelectorAll(
+    '.quiz-lesson[data-lesson-id="lesson1"] .quiz-item'
+  );
 
   quizItems.forEach((item) => {
     const qid = item.getAttribute("data-question");
     const buttons = item.querySelectorAll("button");
-    let thisCorrect = false;
+    const feedback = item.querySelector(".quiz-feedback");
+
     buttons.forEach((btn) => {
-      if (
-        btn.getAttribute("data-answer") === correctAnswers[qid] &&
-        btn.classList.contains("correct")
-      ) {
-        thisCorrect = true;
-      }
+      btn.addEventListener("click", () => {
+        const userAnswer = btn.getAttribute("data-answer");
+
+        // 清除旧状态
+        buttons.forEach((b) => b.classList.remove("correct", "wrong"));
+        feedback.classList.remove("ok", "bad");
+
+        if (userAnswer === correctAnswers[qid]) {
+          btn.classList.add("correct");
+          feedback.textContent = "✅ 回答正确！" + " " + explanations[qid];
+          feedback.classList.add("ok");
+        } else {
+          btn.classList.add("wrong");
+          feedback.textContent = "❌ 这不是最合适的选项，再想一想。";
+          feedback.classList.add("bad");
+        }
+
+        checkAllCorrect();
+      });
     });
-    if (!thisCorrect) {
-      allCorrect = false;
-    }
   });
 
-  if (allCorrect) {
-    nextLessonBtn.disabled = false;
-    nextLessonBtn.classList.add("enabled");
-    nextLessonBtn.textContent =
-      "✅ 太棒了！准备好了吗？点击这里开始第 2 课：向量的加法与数乘";
-  }
-}
+  function checkAllCorrect() {
+    let allCorrect = true;
 
-// 初次绘制
+    quizItems.forEach((item) => {
+      const qid = item.getAttribute("data-question");
+      const buttons = item.querySelectorAll("button");
+      let thisCorrect = false;
+      buttons.forEach((btn) => {
+        if (
+          btn.getAttribute("data-answer") === correctAnswers[qid] &&
+          btn.classList.contains("correct")
+        ) {
+          thisCorrect = true;
+        }
+      });
+      if (!thisCorrect) {
+        allCorrect = false;
+      }
+    });
+
+    if (allCorrect && nextLessonBtn) {
+      nextLessonBtn.disabled = false;
+      nextLessonBtn.classList.add("enabled");
+      nextLessonBtn.textContent =
+        "✅ 太棒了！点击这里切换到第 2 课：向量的加法与数乘";
+
+      nextLessonBtn.addEventListener("click", () => {
+        setActiveLesson("lesson2");
+      });
+    }
+  }
+
+  // 初始化默认课
+  setActiveLesson(currentLessonId);
+})();
+
+// 初次绘制（第 1 课交互）
 drawVector();
 

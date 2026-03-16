@@ -9,8 +9,8 @@
   <div class="page">
     <header class="header">
       <div class="header-left">
-        <h1>线性代数 · 第 1 课</h1>
-        <p>向量：从“箭头”开始</p>
+        <h1>线性代数 · 入门</h1>
+        <p>从几何直观到抽象理解</p>
       </div>
       <div class="progress">
         <div class="progress-bar">
@@ -20,74 +20,111 @@
       </div>
     </header>
 
+    <div class="lesson-tabs" id="lessonTabs">
+      <button class="lesson-tab active" data-lesson-id="lesson1">
+        第 1 课：向量 = 箭头
+      </button>
+      <button class="lesson-tab" data-lesson-id="lesson2">
+        第 2 课：加法与数乘
+      </button>
+    </div>
+
     <main class="main">
-      <section class="left-panel">
-        <div class="card">
-          <h2>你已经见过的“向量”</h2>
-          <ul class="examples">
-            <li><strong>速度：</strong>向东 3 米/秒</li>
-            <li><strong>力：</strong>向上 10 牛顿</li>
-            <li><strong>位移：</strong>从 A 走到 B</li>
-          </ul>
-          <p class="explain">
-            它们都有两个共同点：有<strong>大小</strong>，有<strong>方向</strong>。<br />
-            我们把这类“既有大小又有方向”的量，叫做：<strong>向量</strong>。
-          </p>
+      <section class="left-panel" id="lessonContent">
+        <!-- 第 1 课：向量 = 箭头 -->
+        <div class="lesson-section active" data-lesson-id="lesson1">
+          <div class="card">
+            <h2>你已经见过的“向量”</h2>
+            <ul class="examples">
+              <li><strong>速度：</strong>向东 3 米/秒</li>
+              <li><strong>力：</strong>向上 10 牛顿</li>
+              <li><strong>位移：</strong>从 A 走到 B</li>
+            </ul>
+            <p class="explain">
+              它们都有两个共同点：有<strong>大小</strong>，有<strong>方向</strong>。<br />
+              我们把这类“既有大小又有方向”的量，叫做：<strong>向量</strong>。
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>用数字表示箭头</h2>
+            <p>
+              在平面上，一个向量可以写成一列数字：
+            </p>
+            <p class="math">
+              v =
+              <span class="column-vector">
+                <span>x</span>
+                <span>y</span>
+              </span>
+            </p>
+            <p>
+              第一个数是横向（x 方向）走了多少，第二个数是竖向（y 方向）走了多少。
+            </p>
+            <p>
+              在右边的坐标系中，拖动箭头尖端，看看
+              <code>(x, y)</code> 和长度是怎样变化的。
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>多维向量的初印象</h2>
+            <p>
+              在三维空间是
+              <span class="column-vector">
+                <span>x</span>
+                <span>y</span>
+                <span>z</span>
+              </span>
+              ，在线性代数中，我们还会遇到
+              <span class="column-vector">
+                <span>x₁</span>
+                <span>x₂</span>
+                <span>⋮</span>
+                <span>xₙ</span>
+              </span>
+              这样的 n 维向量。
+            </p>
+            <p>
+              你暂时只要记住：它们都是“很多方向上的分量”合在一起的一支箭头。
+            </p>
+          </div>
         </div>
 
-        <div class="card">
-          <h2>用数字表示箭头</h2>
-          <p>
-            在平面上，一个向量可以写成一列数字：
-          </p>
-          <p class="math">
-            v =
-            <span class="column-vector">
-              <span>x</span>
-              <span>y</span>
-            </span>
-          </p>
-          <p>
-            第一个数是横向（x 方向）走了多少，第二个数是竖向（y 方向）走了多少。
-          </p>
-          <p>
-            在右边的坐标系中，拖动箭头尖端，看看
-            <code>(x, y)</code> 和长度是怎样变化的。
-          </p>
-        </div>
-
-        <div class="card">
-          <h2>多维向量的初印象</h2>
-          <p>
-            在三维空间是
-            <span class="column-vector">
-              <span>x</span>
-              <span>y</span>
-              <span>z</span>
-            </span>
-            ，在线性代数中，我们还会遇到
-            <span class="column-vector">
-              <span>x₁</span>
-              <span>x₂</span>
-              <span>⋮</span>
-              <span>xₙ</span>
-            </span>
-            这样的 n 维向量。
-          </p>
-          <p>
-            你暂时只要记住：它们都是“很多方向上的分量”合在一起的一支箭头。
-          </p>
+        <!-- 第 2 课：占位内容，后续用 JS 填充或直接在此写详案 -->
+        <div class="lesson-section" data-lesson-id="lesson2">
+          <div class="card">
+            <h2>向量加法：接尾法</h2>
+            <p>
+              想象你先走一段路再走另一段路：先走向量 u，再走向量 v。把 v 的起点放在 u 的终点，
+              从原点到最后终点的箭头，就是 u + v。
+            </p>
+          </div>
+          <div class="card">
+            <h2>数乘：拉伸与反向</h2>
+            <p>
+              λv 表示沿着 v 的方向（或反方向）拉伸到 λ 倍。当 λ &gt; 0 时方向不变，长度变为 λ 倍；
+              当 λ &lt; 0 时方向相反，长度变为 |λ| 倍。
+            </p>
+          </div>
+          <div class="card">
+            <h2>线性组合的第一印象</h2>
+            <p>
+              w = a·u + b·v 表示：先走 a 步 u，再走 b 步 v，结果仍然是一支箭头。以后我们会把这叫做“线性组合”。
+            </p>
+          </div>
         </div>
       </section>
 
       <section class="right-panel">
         <div class="canvas-card">
           <div class="canvas-header">
-            <h2>拖动箭头，感受向量</h2>
-            <p>从原点出发的箭头就是一个向量 v。</p>
+            <h2 id="canvasTitle">拖动箭头，感受向量</h2>
+            <p id="canvasSubtitle">从原点出发的箭头就是一个向量 v。</p>
           </div>
           <canvas id="vectorCanvas" width="480" height="360"></canvas>
-          <div class="vector-info">
+          <!-- 第 1 课使用的向量信息 -->
+          <div class="vector-info" data-lesson-id="lesson1">
             <div>
               <span class="label">当前向量 v：</span>
               <span id="vecDisplay"></span>
@@ -105,49 +142,74 @@
         <div class="quiz-card">
           <h2>小测：你真的理解了吗？</h2>
 
-          <div class="quiz-item" data-question="q1">
-            <p class="quiz-question">
-              Q1：向量
-              <span class="column-vector">
-                <span>-1</span>
-                <span>2</span>
-              </span>
-              最符合哪种描述？
-            </p>
-            <div class="quiz-options">
-              <button data-answer="A">A. 向右 1，向上 2</button>
-              <button data-answer="B">B. 向左 1，向上 2</button>
-              <button data-answer="C">C. 向左 2，向上 1</button>
+          <!-- 第 1 课小测 -->
+          <div class="quiz-lesson" data-lesson-id="lesson1">
+            <div class="quiz-item" data-question="q1">
+              <p class="quiz-question">
+                Q1：向量
+                <span class="column-vector">
+                  <span>-1</span>
+                  <span>2</span>
+                </span>
+                最符合哪种描述？
+              </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. 向右 1，向上 2</button>
+                <button data-answer="B">B. 向左 1，向上 2</button>
+                <button data-answer="C">C. 向左 2，向上 1</button>
+              </div>
+              <p class="quiz-feedback"></p>
             </div>
-            <p class="quiz-feedback"></p>
+
+            <div class="quiz-item" data-question="q2">
+              <p class="quiz-question">
+                Q2：向量
+                <span class="column-vector">
+                  <span>6</span>
+                  <span>8</span>
+                </span>
+                的长度 |v| 是多少？
+              </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. 7</button>
+                <button data-answer="B">B. 10</button>
+                <button data-answer="C">C. √(36 + 64)</button>
+              </div>
+              <p class="quiz-feedback"></p>
+            </div>
+
+            <div class="quiz-item" data-question="q3">
+              <p class="quiz-question">
+                Q3：下面哪个更像是“向量”的例子？
+              </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. 今天是 3 月 16 日</button>
+                <button data-answer="B">B. 往东北方向开车，每小时 60 公里</button>
+              </div>
+              <p class="quiz-feedback"></p>
+            </div>
           </div>
 
-          <div class="quiz-item" data-question="q2">
-            <p class="quiz-question">
-              Q2：向量
-              <span class="column-vector">
-                <span>6</span>
-                <span>8</span>
-              </span>
-              的长度 |v| 是多少？
-            </p>
-            <div class="quiz-options">
-              <button data-answer="A">A. 7</button>
-              <button data-answer="B">B. 10</button>
-              <button data-answer="C">C. √(36 + 64)</button>
+          <!-- 第 2 课小测（占位） -->
+          <div class="quiz-lesson" data-lesson-id="lesson2" style="display: none;">
+            <div class="quiz-item" data-question="l2q1">
+              <p class="quiz-question">
+                Q1：下列哪一种画法，正确表示 u + v？
+              </p>
+              <p class="quiz-feedback"></p>
             </div>
-            <p class="quiz-feedback"></p>
-          </div>
-
-          <div class="quiz-item" data-question="q3">
-            <p class="quiz-question">
-              Q3：下面哪个更像是“向量”的例子？
-            </p>
-            <div class="quiz-options">
-              <button data-answer="A">A. 今天是 3 月 16 日</button>
-              <button data-answer="B">B. 往东北方向开车，每小时 60 公里</button>
+            <div class="quiz-item" data-question="l2q2">
+              <p class="quiz-question">
+                Q2：相比 v，-2v 的描述是？
+              </p>
+              <p class="quiz-feedback"></p>
             </div>
-            <p class="quiz-feedback"></p>
+            <div class="quiz-item" data-question="l2q3">
+              <p class="quiz-question">
+                Q3：若 u = (1,0)，v = (0,1)，则 2u + 3v 等于？
+              </p>
+              <p class="quiz-feedback"></p>
+            </div>
           </div>
         </div>
       </section>

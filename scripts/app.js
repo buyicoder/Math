@@ -334,6 +334,12 @@ canvas.addEventListener("touchend", () => {
       if (hint) hint.textContent = "提示：在右侧控制区切换拖动对象（默认拖 x），然后在画布里拖动，观察坐标和平行四边形的变化。";
     }
 
+    // 画布左上角 a= / b= 图例仅第 2 课显示
+    const coeffLegend = document.getElementById("coeffLegend");
+    if (coeffLegend) {
+      coeffLegend.style.display = lessonId === "lesson2" ? "flex" : "none";
+    }
+
     drawScene();
   }
 

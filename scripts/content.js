@@ -2,7 +2,7 @@
 // HTML 结构仍由 app.js 渲染为 .lesson-section 和 .quiz-lesson
 
 window.LessonsContent = {
-  order: ["lesson1", "lesson2", "lesson3"],
+  order: ["lesson1", "lesson2", "lesson3", "lesson4"],
   lessons: {
     lesson1: {
       leftInner: `
@@ -236,6 +236,92 @@ window.LessonsContent = {
         </div>
       `,
     },
+    lesson4: {
+      leftInner: `
+        <div class="card">
+          <h2>矩阵乘以向量：一次“变形”</h2>
+          <p>
+            在线性代数里，很多时候我们把 2×2 矩阵 A 看成一个“机器”：它接收一个向量 x，吐出一个新向量 Ax。
+          </p>
+          <p>
+            从几何上看，就是把整张平面做了一次统一的<strong>线性变形</strong>：所有箭头都一起被拉伸、旋转、剪切。
+          </p>
+        </div>
+        <div class="card">
+          <h2>两列向量 = 新的坐标轴</h2>
+          <p>
+            把 A =
+            <span class="column-vector">
+              <span>a</span>
+              <span>c</span>
+            </span>
+            <span class="column-vector">
+              <span>b</span>
+              <span>d</span>
+            </span>
+            看成两支向量：第一列是 e₁ 的去向，第二列是 e₂ 的去向。
+          </p>
+          <p>
+            也就是说，A 把原来的“标准坐标轴” e₁, e₂ 变成了两支新的基向量。
+          </p>
+        </div>
+        <div class="card">
+          <h2>几个典型的 2×2 矩阵</h2>
+          <ul class="examples">
+            <li><strong>缩放：</strong>diag(2, 0.5) 把 x 方向拉长 2 倍，把 y 方向压缩为一半。</li>
+            <li><strong>旋转：</strong>R(θ) = [[cosθ, -sinθ], [sinθ, cosθ]] 把所有向量整体旋转 θ。</li>
+            <li><strong>剪切：</strong>[[1, k], [0, 1]] 把平面沿 x 方向“斜着推”成平行四边形。</li>
+          </ul>
+        </div>
+      `,
+      quizInner: `
+        <div class="quiz-item" data-question="l4q1">
+          <p class="quiz-question">
+            Q1：矩阵
+            <span class="column-vector">
+              <span>2</span>
+              <span>0</span>
+            </span>
+            <span class="column-vector">
+              <span>0</span>
+              <span>1</span>
+            </span>
+            对向量做了什么？
+          </p>
+          <div class="quiz-options">
+            <button data-answer="A">A. 沿 x 方向拉伸为 2 倍，y 不变</button>
+            <button data-answer="B">B. 沿 y 方向拉伸为 2 倍，x 不变</button>
+            <button data-answer="C">C. 同时把 x, y 都变为原来的 2 倍</button>
+          </div>
+          <p class="quiz-feedback"></p>
+        </div>
+
+        <div class="quiz-item" data-question="l4q2">
+          <p class="quiz-question">
+            Q2：下列哪个矩阵表示“把平面逆时针旋转 90°”？
+          </p>
+          <div class="quiz-options">
+            <button data-answer="A">A. [[0, -1], [1, 0]]</button>
+            <button data-answer="B">B. [[0, 1], [-1, 0]]</button>
+            <button data-answer="C">C. [[1, 0], [0, -1]]</button>
+          </div>
+          <p class="quiz-feedback"></p>
+        </div>
+
+        <div class="quiz-item" data-question="l4q3">
+          <p class="quiz-question">
+            Q3：下面哪个变换<span class="math">不是</span>线性变换？
+          </p>
+          <div class="quiz-options">
+            <button data-answer="A">A. T(x) = A x，其中 A 是固定矩阵</button>
+            <button data-answer="B">B. T(x) = A x + (1, 0)</button>
+            <button data-answer="C">C. T(x) = 0 · x</button>
+          </div>
+          <p class="quiz-feedback"></p>
+        </div>
+      `,
+    },
   },
 };
+
 

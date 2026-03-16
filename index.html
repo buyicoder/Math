@@ -30,6 +30,9 @@
       <button class="lesson-tab" data-lesson-id="lesson3">
         第 3 课：线性组合与张成
       </button>
+      <button class="lesson-tab" data-lesson-id="lesson4">
+        第 4 课：矩阵 = 变换
+      </button>
     </div>
 
     <main class="main">
@@ -131,6 +134,39 @@
               </div>
             </div>
           </div>
+
+          <!-- 第 4 课使用的控制区 -->
+          <div class="vector-controls" data-lesson-id="lesson4" style="display: none;">
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">选择变换类型</div>
+                <select id="l4Mode">
+                  <option value="scale">缩放</option>
+                  <option value="rotate">旋转</option>
+                  <option value="shear">剪切</option>
+                  <option value="custom">自定义矩阵</option>
+                </select>
+              </div>
+            </div>
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">当前矩阵 A：</div>
+                <div class="matrix-input">
+                  <div>
+                    <input type="number" id="m11" step="0.1" />
+                    <input type="number" id="m12" step="0.1" />
+                  </div>
+                  <div>
+                    <input type="number" id="m21" step="0.1" />
+                    <input type="number" id="m22" step="0.1" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="vc-row" id="l4ExtraControls">
+              <!-- 由 lesson4.js 根据模式填充额外滑块，例如缩放系数、角度、剪切系数 -->
+            </div>
+          </div>
           <div class="hint">
             提示：在坐标系中拖动箭头尖端（鼠标左键按住移动），看看 v 和 |v| 如何变化。
           </div>
@@ -154,6 +190,7 @@
   <script src="scripts/lesson1.js"></script>
   <script src="scripts/lesson2.js"></script>
   <script src="scripts/lesson3.js"></script>
+  <script src="scripts/lesson4.js"></script>
   <script src="scripts/app.js"></script>
 </body>
 </html>

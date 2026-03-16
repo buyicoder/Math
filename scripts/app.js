@@ -113,6 +113,8 @@ function drawScene() {
     window.Lesson2.draw(api);
   } else if (currentLessonId === "lesson3" && window.Lesson3) {
     window.Lesson3.draw(api);
+  } else if (currentLessonId === "lesson4" && window.Lesson4) {
+    window.Lesson4.draw(api);
   }
 }
 
@@ -249,19 +251,36 @@ canvas.addEventListener("touchend", () => {
     const vInfo = document.querySelector('.vector-info[data-lesson-id="lesson1"]');
     const vControls = document.querySelector('.vector-controls[data-lesson-id="lesson2"]');
     const vControls3 = document.querySelector('.vector-controls[data-lesson-id="lesson3"]');
-    if (vInfo && vControls && vControls3) {
+    const vControls4 = document.querySelector('.vector-controls[data-lesson-id="lesson4"]');
+    if (vInfo && vControls && vControls3 && vControls4) {
       if (lessonId === "lesson1") {
         vInfo.style.display = "flex";
         vControls.style.display = "none";
         vControls3.style.display = "none";
+        vControls4.style.display = "none";
       } else if (lessonId === "lesson2") {
         vInfo.style.display = "none";
         vControls.style.display = "flex";
         vControls3.style.display = "none";
+        vControls4.style.display = "none";
       } else if (lessonId === "lesson3") {
         vInfo.style.display = "none";
         vControls.style.display = "none";
         vControls3.style.display = "flex";
+        vControls4.style.display = "none";
+      } else if (lessonId === "lesson4") {
+        vInfo.style.display = "none";
+        vControls.style.display = "none";
+        vControls3.style.display = "none";
+        vControls4.style.display = "flex";
+        if (window.Lesson4 && !vControls4.dataset.inited) {
+          window.Lesson4.setupControls(() => {
+            if (currentLessonId === "lesson4") {
+              drawScene();
+            }
+          });
+          vControls4.dataset.inited = "true";
+        }
       }
     }
 
@@ -280,6 +299,10 @@ canvas.addEventListener("touchend", () => {
       if (canvasTitle) canvasTitle.textContent = "线性组合与张成（Span）";
       if (canvasSubtitle) canvasSubtitle.textContent = "观察 Span{u} 一条线，和 Span{u, v} 可以覆盖的区域。";
       if (hint) hint.textContent = "提示：拖动 u、v，切换模式，感受它们能“铺满”哪些地方。";
+    } else if (lessonId === "lesson4") {
+      if (canvasTitle) canvasTitle.textContent = "矩阵 = 变形平面的机器";
+      if (canvasSubtitle) canvasSubtitle.textContent = "观察矩阵如何把 e₁, e₂ 和向量 x 变到新的位置。";
+      if (hint) hint.textContent = "提示：切换变换类型或调整参数，看看 A e₁、A e₂ 和 A x 的变化。";
     }
 
     drawScene();
@@ -414,6 +437,40 @@ canvas.addEventListener("touchend", () => {
       if (currentLessonId === "lesson3") drawScene();
     });
   }
+
+  // 第 4 课小测逻辑
+  const correctAnswers4 = {
+    l4q1: "A",
+    l4q2: "A",
+    l4q3: "B",
+  };
+  const explanations4 = {
+    l4q1: "对任意 (x, y)，A(x, y) = (2x, y)，因此是沿 x 方向拉伸 2 倍，y 不变。",
+    l4q2: "[[0, -1], [1, 0]] 把 (1,0) 变成 (0,1)，(0,1) 变成 (-1,0)，正是逆时针 90° 旋转矩阵。",
+    l4q3: "T(x) = A x + b 含有平移项 b，不满足 T(0) = 0，所以不是线性变换。",
+  };
+  const quizItems4 = document.querySelectorAll('.quiz-lesson[data-lesson-id="lesson4"] .quiz-item');
+  quizItems4.forEach((item) => {
+    const qid = item.getAttribute("data-question");
+    const buttons = item.querySelectorAll("button");
+    const feedback = item.querySelector(".quiz-feedback");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userAnswer = btn.getAttribute("data-answer");
+        buttons.forEach((b) => b.classList.remove("correct", "wrong"));
+        feedback.classList.remove("ok", "bad");
+        if (userAnswer === correctAnswers4[qid]) {
+          btn.classList.add("correct");
+          feedback.textContent = "✅ 回答正确！" + " " + explanations4[qid];
+          feedback.classList.add("ok");
+        } else {
+          btn.classList.add("wrong");
+          feedback.textContent = "❌ 再想一想，结合画面里的几何效果一起思考。";
+          feedback.classList.add("bad");
+        }
+      });
+    });
+  });
 
   setActiveLesson(currentLessonId);
 })();

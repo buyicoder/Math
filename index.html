@@ -27,6 +27,9 @@
       <button class="lesson-tab" data-lesson-id="lesson2">
         第 2 课：加法与数乘
       </button>
+      <button class="lesson-tab" data-lesson-id="lesson3">
+        第 3 课：线性组合与张成
+      </button>
     </div>
 
     <main class="main">
@@ -91,7 +94,7 @@
           </div>
         </div>
 
-        <!-- 第 2 课：占位内容，后续用 JS 填充或直接在此写详案 -->
+        <!-- 第 2 课：加法与数乘 -->
         <div class="lesson-section" data-lesson-id="lesson2">
           <div class="card">
             <h2>向量加法：接尾法</h2>
@@ -112,6 +115,36 @@
             <p>
               w = a·u + b·v 表示：先走 a 步 u，再走 b 步 v，结果仍然是一支箭头。以后我们会把这叫做“线性组合”。
             </p>
+          </div>
+        </div>
+
+        <!-- 第 3 课：线性组合与张成 -->
+        <div class="lesson-section" data-lesson-id="lesson3">
+          <div class="card">
+            <h2>线性组合回顾</h2>
+            <p>
+              任何形如 w = a·u + b·v 的向量，都可以理解为：先走 a 步 u，再走 b 步 v。
+            </p>
+            <p>
+              如果我们把所有可能的 a、b 都试一遍，就得到了：用 u 和 v 能“拼”出的所有向量。
+            </p>
+          </div>
+          <div class="card">
+            <h2>由向量“张成”的空间（Span）</h2>
+            <p>
+              记 Span{u, v} = { a·u + b·v | a, b ∈ ℝ }，这是所有线性组合的集合。
+            </p>
+            <p>
+              直觉：Span{u, v} = “用 u 和 v 能铺出来的所有地方”。
+            </p>
+          </div>
+          <div class="card">
+            <h2>三种典型情况</h2>
+            <ul class="examples">
+              <li><strong>只有 u：</strong>Span{u} 是过原点的一条直线。</li>
+              <li><strong>u, v 共线：</strong>Span{u, v} 仍然是一条线。</li>
+              <li><strong>u, v 不共线：</strong>Span{u, v} 可以铺满整个平面。</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -168,6 +201,45 @@
               <div class="vc-block">
                 <div class="vc-label">线性组合 w = a·u + b·v：</div>
                 <div id="wDisplay"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 第 3 课使用的控制区 -->
+          <div class="vector-controls" data-lesson-id="lesson3" style="display: none;">
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">向量 u：</div>
+                <div id="l3uDisplay"></div>
+              </div>
+              <div class="vc-block">
+                <div class="vc-label">向量 v：</div>
+                <div id="l3vDisplay"></div>
+              </div>
+            </div>
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">模式选择</div>
+                <div class="vc-mode-toggle">
+                  <label><input type="radio" name="l3mode" value="u" checked /> 只用 u（Span{u}）</label>
+                  <label><input type="radio" name="l3mode" value="uv" /> 用 u 和 v（Span{u, v}）</label>
+                </div>
+              </div>
+            </div>
+            <div class="vc-row">
+              <div class="vc-block">
+                <label class="vc-label">
+                  显示可达区域（Span）：
+                  <input type="checkbox" id="showSpanArea" checked />
+                </label>
+              </div>
+            </div>
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">当前结论：</div>
+                <p id="spanConclusion" class="vc-value">
+                  Span{u} 是过原点的一条线。
+                </p>
               </div>
             </div>
           </div>
@@ -259,6 +331,45 @@
                 <button data-answer="A">A. (2, 3)</button>
                 <button data-answer="B">B. (3, 2)</button>
                 <button data-answer="C">C. (5, 0)</button>
+              </div>
+              <p class="quiz-feedback"></p>
+            </div>
+          </div>
+
+          <!-- 第 3 课小测 -->
+          <div class="quiz-lesson" data-lesson-id="lesson3" style="display: none;">
+            <div class="quiz-item" data-question="l3q1">
+              <p class="quiz-question">
+                Q1：只用一个非零向量 u，Span{u} 是什么？
+              </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. 整个平面</button>
+                <button data-answer="B">B. 过原点的一条直线</button>
+                <button data-answer="C">C. 只有原点</button>
+              </div>
+              <p class="quiz-feedback"></p>
+            </div>
+
+            <div class="quiz-item" data-question="l3q2">
+              <p class="quiz-question">
+                Q2：若 v = 2u，那么 Span{u, v} 是？
+              </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. 与 Span{u} 相同的一条线</button>
+                <button data-answer="B">B. 整个平面</button>
+                <button data-answer="C">C. 比 Span{u} 大一维的空间</button>
+              </div>
+              <p class="quiz-feedback"></p>
+            </div>
+
+            <div class="quiz-item" data-question="l3q3">
+              <p class="quiz-question">
+                Q3：u = (1, 0)，v = (0, 1)。下列哪一点一定在 Span{u, v} 里？
+              </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. (3, -2)</button>
+                <button data-answer="B">B. (0, 0)</button>
+                <button data-answer="C">C. 以上两点都在</button>
               </div>
               <p class="quiz-feedback"></p>
             </div>

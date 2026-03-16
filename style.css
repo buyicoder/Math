@@ -231,6 +231,19 @@ body {
   font-size: 13px;
 }
 
+.vc-mode-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vc-mode-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
 .vc-row {
   display: flex;
   gap: 12px;

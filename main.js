@@ -13,7 +13,7 @@ const lenDisplay = document.getElementById("lenDisplay");
 let vx = 3;
 let vy = 2;
 
-// 第 2 课：两个向量 u、v 以及线性组合 a·u + b·v
+// 第 2 / 3 课：两个向量 u、v 以及线性组合 a·u + b·v
 let ux = 2;
 let uy = 1;
 let vx2 = -1;
@@ -204,6 +204,8 @@ function drawScene() {
     drawLesson1Vector();
   } else if (currentLessonId === "lesson2") {
     drawLesson2Scene();
+  } else if (currentLessonId === "lesson3") {
+    drawLesson3Scene();
   }
 }
 
@@ -352,6 +354,146 @@ function drawLesson2Scene() {
   }
 }
 
+// 第 3 课：绘制 Span{u} 或 Span{u, v}
+function drawLesson3Scene() {
+  drawGrid();
+
+  const modeInput = document.querySelector('input[name="l3mode"]:checked');
+  const mode = modeInput ? modeInput.value : "u";
+  const showSpanArea = document.getElementById("showSpanArea");
+  const spanConclusion = document.getElementById("spanConclusion");
+
+  const uEnd = logicToScreen(ux, uy);
+  const vEnd = logicToScreen(vx2, vy2);
+
+  // 绘制 u、v 本身
+  // u
+  ctx.strokeStyle = "#38bdf8";
+  ctx.fillStyle = "#38bdf8";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(origin.x, origin.y);
+  ctx.lineTo(uEnd.x, uEnd.y);
+  ctx.stroke();
+  let angle = Math.atan2(origin.y - uEnd.y, uEnd.x - origin.x);
+  let headLen = 9;
+  let hx1 = uEnd.x - headLen * Math.cos(angle - Math.PI / 7);
+  let hy1 = uEnd.y + headLen * Math.sin(angle - Math.PI / 7);
+  let hx2 = uEnd.x - headLen * Math.cos(angle + Math.PI / 7);
+  let hy2 = uEnd.y + headLen * Math.sin(angle + Math.PI / 7);
+  ctx.beginPath();
+  ctx.moveTo(uEnd.x, uEnd.y);
+  ctx.lineTo(hx1, hy1);
+  ctx.lineTo(hx2, hy2);
+  ctx.closePath();
+  ctx.fill();
+  drawArrowLabel(origin, uEnd, "u");
+
+  // v
+  ctx.strokeStyle = "#fb923c";
+  ctx.fillStyle = "#fb923c";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(origin.x, origin.y);
+  ctx.lineTo(vEnd.x, vEnd.y);
+  ctx.stroke();
+  angle = Math.atan2(origin.y - vEnd.y, vEnd.x - origin.x);
+  hx1 = vEnd.x - headLen * Math.cos(angle - Math.PI / 7);
+  hy1 = vEnd.y + headLen * Math.sin(angle - Math.PI / 7);
+  hx2 = vEnd.x - headLen * Math.cos(angle + Math.PI / 7);
+  hy2 = vEnd.y + headLen * Math.sin(angle + Math.PI / 7);
+  ctx.beginPath();
+  ctx.moveTo(vEnd.x, vEnd.y);
+  ctx.lineTo(hx1, hy1);
+  ctx.lineTo(hx2, hy2);
+  ctx.closePath();
+  ctx.fill();
+  drawArrowLabel(origin, vEnd, "v");
+
+  // 更新右侧向量显示
+  const l3uDisplay = document.getElementById("l3uDisplay");
+  const l3vDisplay = document.getElementById("l3vDisplay");
+  if (l3uDisplay && l3vDisplay) {
+    const r = (x) => Math.round(x * 10) / 10;
+    l3uDisplay.innerHTML = `
+      <span class="column-vector">
+        <span>${r(ux)}</span>
+        <span>${r(uy)}</span>
+      </span>
+    `;
+    l3vDisplay.innerHTML = `
+      <span class="column-vector">
+        <span>${r(vx2)}</span>
+        <span>${r(vy2)}</span>
+      </span>
+    `;
+  }
+
+  // 可达区域/Span 可视化
+  const showArea = showSpanArea && showSpanArea.checked;
+
+  if (mode === "u") {
+    // Span{u}: 一条过原点的直线
+    ctx.strokeStyle = "rgba(56, 189, 248, 0.6)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    // 使用多倍数来画一条长一点的线
+    const k = 5;
+    const p1 = logicToScreen(-k * ux, -k * uy);
+    const p2 = logicToScreen(k * ux, k * uy);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+
+    if (spanConclusion) {
+      spanConclusion.textContent = "当前：Span{u} 是过原点的一条直线（1 维）。";
+    }
+  } else {
+    // 模式 uv：Span{u, v}
+    // 判断是否共线：行列式接近 0
+    const det = ux * vy2 - uy * vx2;
+    const isCollinear = Math.abs(det) < 1e-5;
+
+    if (isCollinear) {
+      // 同样画一条线
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.6)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      const k = 5;
+      const p1 = logicToScreen(-k * ux, -k * uy);
+      const p2 = logicToScreen(k * ux, k * uy);
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+
+      if (spanConclusion) {
+        spanConclusion.textContent =
+          "当前：u 与 v 共线，Span{u, v} 仍然是一条线（1 维）。";
+      }
+    } else {
+      // 不共线：用点云近似整个平面的一部分
+      if (showArea) {
+        ctx.fillStyle = "rgba(34, 197, 94, 0.15)";
+        const step = 0.7;
+        for (let a = -3; a <= 3; a += step) {
+          for (let b = -3; b <= 3; b += step) {
+            const x = a * ux + b * vx2;
+            const y = a * uy + b * vy2;
+            const p = logicToScreen(x, y);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+
+      if (spanConclusion) {
+        spanConclusion.textContent =
+          "当前：u 与 v 不共线，Span{u, v} 可以铺满整个平面（2 维）。";
+      }
+    }
+  }
+}
 // 鼠标事件：第 1 课中可以在画布任意位置拖动来调整向量
 canvas.addEventListener("mousedown", (e) => {
   if (currentLessonId !== "lesson1") return;
@@ -459,20 +601,29 @@ canvas.addEventListener("touchend", () => {
       ql.style.display = id === lessonId ? "block" : "none";
     });
 
-    // 第 1 课 / 第 2 课右侧信息区切换
+    // 右侧信息区切换
     const vInfo = document.querySelector(
       '.vector-info[data-lesson-id="lesson1"]'
     );
     const vControls = document.querySelector(
       '.vector-controls[data-lesson-id="lesson2"]'
     );
-    if (vInfo && vControls) {
+    const vControls3 = document.querySelector(
+      '.vector-controls[data-lesson-id="lesson3"]'
+    );
+    if (vInfo && vControls && vControls3) {
       if (lessonId === "lesson1") {
         vInfo.style.display = "flex";
         vControls.style.display = "none";
+        vControls3.style.display = "none";
       } else if (lessonId === "lesson2") {
         vInfo.style.display = "none";
         vControls.style.display = "flex";
+        vControls3.style.display = "none";
+      } else if (lessonId === "lesson3") {
+        vInfo.style.display = "none";
+        vControls.style.display = "none";
+        vControls3.style.display = "flex";
       }
     }
 
@@ -492,6 +643,12 @@ canvas.addEventListener("touchend", () => {
         "在这里，我们将看到 u、v 以及它们的和 u + v 和线性组合。";
       hint.textContent =
         "提示：调整 a、b 滑块，观察 u、v 以及 w = a·u + b·v 的变化。";
+    } else if (lessonId === "lesson3") {
+      canvasTitle.textContent = "线性组合与张成（Span）";
+      canvasSubtitle.textContent =
+        "观察 Span{u} 一条线，和 Span{u, v} 可以覆盖的区域。";
+      hint.textContent =
+        "提示：拖动 u、v，切换模式，感受它们能“铺满”哪些地方。";
     }
 
     // 每次切换课程时重绘场景
@@ -630,8 +787,8 @@ canvas.addEventListener("touchend", () => {
   const bSlider = document.getElementById("bSlider");
   const aValue = document.getElementById("aValue");
   const bValue = document.getElementById("bValue");
-const legendA = document.getElementById("legendA");
-const legendB = document.getElementById("legendB");
+  const legendA = document.getElementById("legendA");
+  const legendB = document.getElementById("legendB");
 
   if (aSlider && aValue) {
     aSlider.addEventListener("input", () => {
@@ -652,6 +809,24 @@ const legendB = document.getElementById("legendB");
       bValue.textContent = txt;
       if (legendB) legendB.textContent = txt;
       if (currentLessonId === "lesson2") {
+        drawScene();
+      }
+    });
+  }
+
+  // 第 3 课模式和 Span 区域开关交互：修改后重绘
+  const l3ModeInputs = document.querySelectorAll('input[name="l3mode"]');
+  const showSpanArea = document.getElementById("showSpanArea");
+  l3ModeInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      if (currentLessonId === "lesson3") {
+        drawScene();
+      }
+    });
+  });
+  if (showSpanArea) {
+    showSpanArea.addEventListener("change", () => {
+      if (currentLessonId === "lesson3") {
         drawScene();
       }
     });

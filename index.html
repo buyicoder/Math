@@ -122,7 +122,13 @@
             <h2 id="canvasTitle">拖动箭头，感受向量</h2>
             <p id="canvasSubtitle">从原点出发的箭头就是一个向量 v。</p>
           </div>
-          <canvas id="vectorCanvas" width="480" height="360"></canvas>
+          <div class="canvas-wrapper">
+            <div class="coeff-legend" id="coeffLegend">
+              <div>a = <span id="legendA">1.0</span></div>
+              <div>b = <span id="legendB">1.0</span></div>
+            </div>
+            <canvas id="vectorCanvas" width="480" height="360"></canvas>
+          </div>
           <!-- 第 1 课使用的向量信息 -->
           <div class="vector-info" data-lesson-id="lesson1">
             <div>

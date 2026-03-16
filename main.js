@@ -630,11 +630,15 @@ canvas.addEventListener("touchend", () => {
   const bSlider = document.getElementById("bSlider");
   const aValue = document.getElementById("aValue");
   const bValue = document.getElementById("bValue");
+const legendA = document.getElementById("legendA");
+const legendB = document.getElementById("legendB");
 
   if (aSlider && aValue) {
     aSlider.addEventListener("input", () => {
       aCoeff = parseFloat(aSlider.value);
-      aValue.textContent = aCoeff.toFixed(1);
+      const txt = aCoeff.toFixed(1);
+      aValue.textContent = txt;
+      if (legendA) legendA.textContent = txt;
       if (currentLessonId === "lesson2") {
         drawScene();
       }
@@ -644,7 +648,9 @@ canvas.addEventListener("touchend", () => {
   if (bSlider && bValue) {
     bSlider.addEventListener("input", () => {
       bCoeff = parseFloat(bSlider.value);
-      bValue.textContent = bCoeff.toFixed(1);
+      const txt = bCoeff.toFixed(1);
+      bValue.textContent = txt;
+      if (legendB) legendB.textContent = txt;
       if (currentLessonId === "lesson2") {
         drawScene();
       }

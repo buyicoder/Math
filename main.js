@@ -243,9 +243,16 @@ function drawLesson2Scene() {
   }
 
   // a·u 段（蓝色淡色）
-  drawDashedArrow(origin, auEnd, "rgba(56, 189, 248, 0.5)");
+  drawDashedArrow(origin, auEnd, "rgba(56, 189, 248, 0.6)");
+  ctx.fillStyle = "rgba(56, 189, 248, 0.9)";
+  ctx.font = "11px system-ui";
+  ctx.fillText(`a·u`, auEnd.x + 4, auEnd.y - 4);
+
   // 从 a·u 终点走 b·v 段（橙色淡色）
-  drawDashedArrow(auEnd, comboEnd, "rgba(251, 146, 60, 0.5)");
+  drawDashedArrow(auEnd, comboEnd, "rgba(251, 146, 60, 0.6)");
+  ctx.fillStyle = "rgba(251, 146, 60, 0.9)";
+  ctx.font = "11px system-ui";
+  ctx.fillText(`b·v`, comboEnd.x + 4, comboEnd.y - 4);
 
   // 绘制 u（蓝色）
   ctx.strokeStyle = "#38bdf8";

@@ -2,7 +2,7 @@
 // HTML 结构仍由 app.js 渲染为 .lesson-section 和 .quiz-lesson
 
 window.LessonsContent = {
-  order: ["lesson1", "lesson2", "lesson3", "lesson4"],
+  order: ["lesson1", "lesson2", "lesson3", "lesson4", "lesson5"],
   lessons: {
     lesson1: {
       leftInner: `
@@ -321,7 +321,80 @@ window.LessonsContent = {
         </div>
       `,
     },
+    lesson5: {
+      leftInner: `
+        <div class="card">
+          <h2>基底：选择一组“尺子”</h2>
+          <p>
+            在平面上，我们平常用的标准坐标轴 e₁ = (1, 0)、e₂ = (0, 1) 只是一组<strong>基底</strong>：
+            任何向量都可以唯一写成 x = x₁ e₁ + x₂ e₂。
+          </p>
+          <p>
+            但只要两支向量 u, v 不共线，它们也可以作为一组基底：任何向量 x 都可以唯一写成 x = α·u + β·v。
+          </p>
+        </div>
+        <div class="card">
+          <h2>在不同基底下的坐标</h2>
+          <p>
+            在标准基底下，x = (x₁, x₂) 表示“沿 e₁ 方向走 x₁，沿 e₂ 方向走 x₂”。
+          </p>
+          <p>
+            在基底 {u, v} 下，x = (α, β) 表示“沿 u 方向走 α，沿 v 方向走 β”，也就是 x = α·u + β·v。
+          </p>
+          <p>
+            向量本身没有变，变的是你选用的“尺子”和写出来的坐标数字。
+          </p>
+        </div>
+        <div class="card">
+          <h2>一个重要前提：u, v 不共线</h2>
+          <p>
+            只有当 u 和 v 不共线（能铺满整个平面），它们才能作为一组基底，此时 α, β 唯一确定。
+          </p>
+          <p>
+            如果 u, v 共线，那么很多向量根本无法用 α·u + β·v 表示，或者表示不唯一。
+          </p>
+        </div>
+      `,
+      quizInner: `
+        <div class="quiz-item" data-question="l5q1">
+          <p class="quiz-question">
+            Q1：在标准基底 e₁ = (1, 0)、e₂ = (0, 1) 下，x = (2, 1) 表示什么？
+          </p>
+          <div class="quiz-options">
+            <button data-answer="A">A. 沿 e₁ 方向走 1，沿 e₂ 方向走 2</button>
+            <button data-answer="B">B. 沿 e₁ 方向走 2，沿 e₂ 方向走 1</button>
+            <button data-answer="C">C. 只和长度有关，和方向无关</button>
+          </div>
+          <p class="quiz-feedback"></p>
+        </div>
+
+        <div class="quiz-item" data-question="l5q2">
+          <p class="quiz-question">
+            Q2：若 u = (1, 0)，v = (1, 1)，x = (2, 1)，则在基底 {u, v} 下，x 的坐标 (α, β) 满足？
+          </p>
+          <div class="quiz-options">
+            <button data-answer="A">A. (α, β) = (1, 1)</button>
+            <button data-answer="B">B. (α, β) = (2, -1)</button>
+            <button data-answer="C">C. (α, β) = (1, 0)</button>
+          </div>
+          <p class="quiz-feedback"></p>
+        </div>
+
+        <div class="quiz-item" data-question="l5q3">
+          <p class="quiz-question">
+            Q3：改变基底（例如从 {e₁, e₂} 换到 {u, v}），下列哪一项是<strong>不变</strong>的？
+          </p>
+          <div class="quiz-options">
+            <button data-answer="A">A. 向量本身（在平面上的箭头）</button>
+            <button data-answer="B">B. 坐标的数字 (x₁, x₂)</button>
+            <button data-answer="C">C. 基底向量的方向</button>
+          </div>
+          <p class="quiz-feedback"></p>
+        </div>
+      `,
+    },
   },
 };
+
 
 

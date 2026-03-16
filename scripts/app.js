@@ -115,6 +115,8 @@ function drawScene() {
     window.Lesson3.draw(api);
   } else if (currentLessonId === "lesson4" && window.Lesson4) {
     window.Lesson4.draw(api);
+  } else if (currentLessonId === "lesson5" && window.Lesson5) {
+    window.Lesson5.draw(api);
   }
 }
 
@@ -152,7 +154,6 @@ function renderContentFromConfig() {
 }
 
 canvas.addEventListener("mousedown", (e) => {
-  if (currentLessonId !== "lesson1" || !window.Lesson1) return;
   dragging = true;
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -161,12 +162,15 @@ canvas.addEventListener("mousedown", (e) => {
   const py = (e.clientY - rect.top) * scaleY;
   const { x, y } = screenToLogic(px, py);
   const clamped = clampVector(x, y);
-  window.Lesson1.setVector(clamped.x, clamped.y);
+  if (currentLessonId === "lesson1" && window.Lesson1) {
+    window.Lesson1.setVector(clamped.x, clamped.y);
+  } else if (currentLessonId === "lesson5" && window.Lesson5) {
+    window.Lesson5.updateFromDrag(x, y);
+  }
   drawScene();
 });
 
 canvas.addEventListener("mousemove", (e) => {
-  if (currentLessonId !== "lesson1" || !window.Lesson1) return;
   if (!dragging) return;
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -175,7 +179,11 @@ canvas.addEventListener("mousemove", (e) => {
   const py = (e.clientY - rect.top) * scaleY;
   const { x, y } = screenToLogic(px, py);
   const clamped = clampVector(x, y);
-  window.Lesson1.setVector(clamped.x, clamped.y);
+  if (currentLessonId === "lesson1" && window.Lesson1) {
+    window.Lesson1.setVector(clamped.x, clamped.y);
+  } else if (currentLessonId === "lesson5" && window.Lesson5) {
+    window.Lesson5.updateFromDrag(x, y);
+  }
   drawScene();
 });
 
@@ -188,7 +196,6 @@ canvas.addEventListener("mouseleave", () => {
 });
 
 canvas.addEventListener("touchstart", (e) => {
-  if (currentLessonId !== "lesson1" || !window.Lesson1) return;
   dragging = true;
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches[0];
@@ -198,12 +205,15 @@ canvas.addEventListener("touchstart", (e) => {
   const py = (touch.clientY - rect.top) * scaleY;
   const { x, y } = screenToLogic(px, py);
   const clamped = clampVector(x, y);
-  window.Lesson1.setVector(clamped.x, clamped.y);
+  if (currentLessonId === "lesson1" && window.Lesson1) {
+    window.Lesson1.setVector(clamped.x, clamped.y);
+  } else if (currentLessonId === "lesson5" && window.Lesson5) {
+    window.Lesson5.updateFromDrag(x, y);
+  }
   drawScene();
 });
 
 canvas.addEventListener("touchmove", (e) => {
-  if (currentLessonId !== "lesson1" || !window.Lesson1) return;
   if (!dragging) return;
   e.preventDefault();
   const rect = canvas.getBoundingClientRect();
@@ -214,7 +224,11 @@ canvas.addEventListener("touchmove", (e) => {
   const py = (touch.clientY - rect.top) * scaleY;
   const { x, y } = screenToLogic(px, py);
   const clamped = clampVector(x, y);
-  window.Lesson1.setVector(clamped.x, clamped.y);
+  if (currentLessonId === "lesson1" && window.Lesson1) {
+    window.Lesson1.setVector(clamped.x, clamped.y);
+  } else if (currentLessonId === "lesson5" && window.Lesson5) {
+    window.Lesson5.updateFromDrag(x, y);
+  }
   drawScene();
 });
 
@@ -252,27 +266,32 @@ canvas.addEventListener("touchend", () => {
     const vControls = document.querySelector('.vector-controls[data-lesson-id="lesson2"]');
     const vControls3 = document.querySelector('.vector-controls[data-lesson-id="lesson3"]');
     const vControls4 = document.querySelector('.vector-controls[data-lesson-id="lesson4"]');
-    if (vInfo && vControls && vControls3 && vControls4) {
+    const vControls5 = document.querySelector('.vector-controls[data-lesson-id="lesson5"]');
+    if (vInfo && vControls && vControls3 && vControls4 && vControls5) {
       if (lessonId === "lesson1") {
         vInfo.style.display = "flex";
         vControls.style.display = "none";
         vControls3.style.display = "none";
         vControls4.style.display = "none";
+        vControls5.style.display = "none";
       } else if (lessonId === "lesson2") {
         vInfo.style.display = "none";
         vControls.style.display = "flex";
         vControls3.style.display = "none";
         vControls4.style.display = "none";
+        vControls5.style.display = "none";
       } else if (lessonId === "lesson3") {
         vInfo.style.display = "none";
         vControls.style.display = "none";
         vControls3.style.display = "flex";
         vControls4.style.display = "none";
+        vControls5.style.display = "none";
       } else if (lessonId === "lesson4") {
         vInfo.style.display = "none";
         vControls.style.display = "none";
         vControls3.style.display = "none";
         vControls4.style.display = "flex";
+        vControls5.style.display = "none";
         if (window.Lesson4 && !vControls4.dataset.inited) {
           window.Lesson4.setupControls(() => {
             if (currentLessonId === "lesson4") {
@@ -281,6 +300,12 @@ canvas.addEventListener("touchend", () => {
           });
           vControls4.dataset.inited = "true";
         }
+      } else if (lessonId === "lesson5") {
+        vInfo.style.display = "none";
+        vControls.style.display = "none";
+        vControls3.style.display = "none";
+        vControls4.style.display = "none";
+        vControls5.style.display = "flex";
       }
     }
 
@@ -303,6 +328,10 @@ canvas.addEventListener("touchend", () => {
       if (canvasTitle) canvasTitle.textContent = "矩阵 = 变形平面的机器";
       if (canvasSubtitle) canvasSubtitle.textContent = "观察矩阵如何把 e₁, e₂ 和向量 x 变到新的位置。";
       if (hint) hint.textContent = "提示：切换变换类型或调整参数，看看 A e₁、A e₂ 和 A x 的变化。";
+    } else if (lessonId === "lesson5") {
+      if (canvasTitle) canvasTitle.textContent = "同一支箭头，在不同基底下的坐标";
+      if (canvasSubtitle) canvasSubtitle.textContent = "比较 x 在标准基底和在 {u, v} 基底下的两种坐标表示。";
+      if (hint) hint.textContent = "提示：在右侧控制区切换拖动对象（默认拖 x），然后在画布里拖动，观察坐标和平行四边形的变化。";
     }
 
     drawScene();
@@ -466,6 +495,40 @@ canvas.addEventListener("touchend", () => {
         } else {
           btn.classList.add("wrong");
           feedback.textContent = "❌ 再想一想，结合画面里的几何效果一起思考。";
+          feedback.classList.add("bad");
+        }
+      });
+    });
+  });
+
+  // 第 5 课小测逻辑
+  const correctAnswers5 = {
+    l5q1: "B",
+    l5q2: "A",
+    l5q3: "A",
+  };
+  const explanations5 = {
+    l5q1: "x = (2,1) 表示沿 e₁ 方向走 2，沿 e₂ 方向走 1。",
+    l5q2: "解 2 = α + β, 1 = β，可得 β = 1, α = 1，所以坐标是 (1,1)。",
+    l5q3: "改变的是坐标轴和坐标数字，向量本身（在平面上的箭头）没有改变。",
+  };
+  const quizItems5 = document.querySelectorAll('.quiz-lesson[data-lesson-id="lesson5"] .quiz-item');
+  quizItems5.forEach((item) => {
+    const qid = item.getAttribute("data-question");
+    const buttons = item.querySelectorAll("button");
+    const feedback = item.querySelector(".quiz-feedback");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userAnswer = btn.getAttribute("data-answer");
+        buttons.forEach((b) => b.classList.remove("correct", "wrong"));
+        feedback.classList.remove("ok", "bad");
+        if (userAnswer === correctAnswers5[qid]) {
+          btn.classList.add("correct");
+          feedback.textContent = "✅ 回答正确！" + " " + explanations5[qid];
+          feedback.classList.add("ok");
+        } else {
+          btn.classList.add("wrong");
+          feedback.textContent = "❌ 再想一想，可以结合画布里的图像来理解。";
           feedback.classList.add("bad");
         }
       });

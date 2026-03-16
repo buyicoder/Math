@@ -33,6 +33,9 @@
       <button class="lesson-tab" data-lesson-id="lesson4">
         第 4 课：矩阵 = 变换
       </button>
+      <button class="lesson-tab" data-lesson-id="lesson5">
+        第 5 课：基与坐标表示
+      </button>
     </div>
 
     <main class="main">
@@ -167,6 +170,38 @@
               <!-- 由 lesson4.js 根据模式填充额外滑块，例如缩放系数、角度、剪切系数 -->
             </div>
           </div>
+
+          <!-- 第 5 课使用的控制区 -->
+          <div class="vector-controls" data-lesson-id="lesson5" style="display: none;">
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">基底向量 u, v（标准坐标）</div>
+                <div class="vc-row">
+                  <div class="vc-block">
+                    <div class="vc-label">u：</div>
+                    <div id="l5uDisplay"></div>
+                  </div>
+                  <div class="vc-block">
+                    <div class="vc-label">v：</div>
+                    <div id="l5vDisplay"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">向量 x（标准坐标）</div>
+                <div id="l5xDisplay"></div>
+              </div>
+            </div>
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">x 在基底 {u, v} 下的坐标</div>
+                <p id="l5coordDisplay" class="vc-value"></p>
+                <p id="l5status" class="vc-value"></p>
+              </div>
+            </div>
+          </div>
           <div class="hint">
             提示：在坐标系中拖动箭头尖端（鼠标左键按住移动），看看 v 和 |v| 如何变化。
           </div>
@@ -191,6 +226,7 @@
   <script src="scripts/lesson2.js"></script>
   <script src="scripts/lesson3.js"></script>
   <script src="scripts/lesson4.js"></script>
+  <script src="scripts/lesson5.js"></script>
   <script src="scripts/app.js"></script>
 </body>
 </html>

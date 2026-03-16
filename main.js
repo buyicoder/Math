@@ -1,3 +1,6 @@
+// 当前课程（用于区分第 1 课 / 第 2 课的画布行为）
+let currentLessonId = "lesson1";
+
 // 画布与坐标相关
 const canvas = document.getElementById("vectorCanvas");
 const ctx = canvas.getContext("2d");
@@ -6,9 +9,17 @@ const ctx = canvas.getContext("2d");
 const vecDisplay = document.getElementById("vecDisplay");
 const lenDisplay = document.getElementById("lenDisplay");
 
-// 向量的内部表示（逻辑坐标）
+// 第 1 课：单向量的内部表示（逻辑坐标）
 let vx = 3;
 let vy = 2;
+
+// 第 2 课：两个向量 u、v 以及线性组合 a·u + b·v
+let ux = 2;
+let uy = 1;
+let vx2 = -1;
+let vy2 = 2;
+let aCoeff = 1;
+let bCoeff = 1;
 
 // 坐标系设置
 const width = canvas.width;
@@ -103,7 +114,7 @@ function drawGrid() {
   ctx.fillText("y", origin.x + 8, 14);
 }
 
-function drawVector() {
+function drawLesson1Vector() {
   drawGrid();
 
   // 计算终点
@@ -178,8 +189,125 @@ function isNearArrowHead(px, py) {
   return dist < 12;
 }
 
-// 鼠标事件：现在可以在画布任意位置拖动来调整向量
+// 根据当前课程绘制对应场景
+function drawScene() {
+  if (currentLessonId === "lesson1") {
+    drawLesson1Vector();
+  } else if (currentLessonId === "lesson2") {
+    drawLesson2Scene();
+  }
+}
+
+// 第 2 课：绘制 u、v 以及 w = a·u + b·v
+function drawLesson2Scene() {
+  drawGrid();
+
+  const uEnd = logicToScreen(ux, uy);
+  const vEnd = logicToScreen(vx2, vy2);
+  const wx = aCoeff * ux + bCoeff * vx2;
+  const wy = aCoeff * uy + bCoeff * vy2;
+  const wEnd = logicToScreen(wx, wy);
+
+  // 绘制 u（蓝色）
+  ctx.strokeStyle = "#38bdf8";
+  ctx.fillStyle = "#38bdf8";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(origin.x, origin.y);
+  ctx.lineTo(uEnd.x, uEnd.y);
+  ctx.stroke();
+  // 箭头
+  let angle = Math.atan2(origin.y - uEnd.y, uEnd.x - origin.x);
+  let headLen = 9;
+  let hx1 = uEnd.x - headLen * Math.cos(angle - Math.PI / 7);
+  let hy1 = uEnd.y + headLen * Math.sin(angle - Math.PI / 7);
+  let hx2 = uEnd.x - headLen * Math.cos(angle + Math.PI / 7);
+  let hy2 = uEnd.y + headLen * Math.sin(angle + Math.PI / 7);
+  ctx.beginPath();
+  ctx.moveTo(uEnd.x, uEnd.y);
+  ctx.lineTo(hx1, hy1);
+  ctx.lineTo(hx2, hy2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = "#e5e7eb";
+  ctx.font = "12px system-ui";
+  ctx.fillText("u", uEnd.x + 6, uEnd.y - 4);
+
+  // 绘制 v（橙色）
+  ctx.strokeStyle = "#fb923c";
+  ctx.fillStyle = "#fb923c";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(origin.x, origin.y);
+  ctx.lineTo(vEnd.x, vEnd.y);
+  ctx.stroke();
+  angle = Math.atan2(origin.y - vEnd.y, vEnd.x - origin.x);
+  hx1 = vEnd.x - headLen * Math.cos(angle - Math.PI / 7);
+  hy1 = vEnd.y + headLen * Math.sin(angle - Math.PI / 7);
+  hx2 = vEnd.x - headLen * Math.cos(angle + Math.PI / 7);
+  hy2 = vEnd.y + headLen * Math.sin(angle + Math.PI / 7);
+  ctx.beginPath();
+  ctx.moveTo(vEnd.x, vEnd.y);
+  ctx.lineTo(hx1, hy1);
+  ctx.lineTo(hx2, hy2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = "#e5e7eb";
+  ctx.fillText("v", vEnd.x + 6, vEnd.y - 4);
+
+  // 绘制 w（绿色）
+  ctx.strokeStyle = "#22c55e";
+  ctx.fillStyle = "#22c55e";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(origin.x, origin.y);
+  ctx.lineTo(wEnd.x, wEnd.y);
+  ctx.stroke();
+  angle = Math.atan2(origin.y - wEnd.y, wEnd.x - origin.x);
+  hx1 = wEnd.x - headLen * Math.cos(angle - Math.PI / 7);
+  hy1 = wEnd.y + headLen * Math.sin(angle - Math.PI / 7);
+  hx2 = wEnd.x - headLen * Math.cos(angle + Math.PI / 7);
+  hy2 = wEnd.y + headLen * Math.sin(angle + Math.PI / 7);
+  ctx.beginPath();
+  ctx.moveTo(wEnd.x, wEnd.y);
+  ctx.lineTo(hx1, hy1);
+  ctx.lineTo(hx2, hy2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = "#e5e7eb";
+  ctx.fillText("w = a·u + b·v", wEnd.x + 6, wEnd.y - 4);
+
+  // 更新右侧显示
+  const uDisplay = document.getElementById("uDisplay");
+  const vDisplay = document.getElementById("vDisplay");
+  const wDisplay = document.getElementById("wDisplay");
+
+  if (uDisplay && vDisplay && wDisplay) {
+    const r = (x) => Math.round(x * 10) / 10;
+    uDisplay.innerHTML = `
+      <span class="column-vector">
+        <span>${r(ux)}</span>
+        <span>${r(uy)}</span>
+      </span>
+    `;
+    vDisplay.innerHTML = `
+      <span class="column-vector">
+        <span>${r(vx2)}</span>
+        <span>${r(vy2)}</span>
+      </span>
+    `;
+    wDisplay.innerHTML = `
+      <span class="column-vector">
+        <span>${r(wx)}</span>
+        <span>${r(wy)}</span>
+      </span>
+    `;
+  }
+}
+
+// 鼠标事件：第 1 课中可以在画布任意位置拖动来调整向量
 canvas.addEventListener("mousedown", (e) => {
+  if (currentLessonId !== "lesson1") return;
   dragging = true;
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -194,6 +322,7 @@ canvas.addEventListener("mousedown", (e) => {
 });
 
 canvas.addEventListener("mousemove", (e) => {
+  if (currentLessonId !== "lesson1") return;
   if (!dragging) return;
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -219,6 +348,7 @@ canvas.addEventListener("mouseleave", () => {
 
 // 触摸支持（手机/平板）：同样可以在任意位置拖动
 canvas.addEventListener("touchstart", (e) => {
+  if (currentLessonId !== "lesson1") return;
   dragging = true;
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches[0];
@@ -234,6 +364,7 @@ canvas.addEventListener("touchstart", (e) => {
 });
 
 canvas.addEventListener("touchmove", (e) => {
+  if (currentLessonId !== "lesson1") return;
   if (!dragging) return;
   e.preventDefault();
   const rect = canvas.getBoundingClientRect();
@@ -260,8 +391,6 @@ canvas.addEventListener("touchend", () => {
   const quizLessons = document.querySelectorAll(".quiz-lesson");
   const nextLessonBtn = document.getElementById("nextLessonBtn");
 
-  let currentLessonId = "lesson1";
-
   function setActiveLesson(lessonId) {
     currentLessonId = lessonId;
 
@@ -283,7 +412,24 @@ canvas.addEventListener("touchend", () => {
       ql.style.display = id === lessonId ? "block" : "none";
     });
 
-    // 更新画布标题/提示（先简单区分 1、2 课）
+    // 第 1 课 / 第 2 课右侧信息区切换
+    const vInfo = document.querySelector(
+      '.vector-info[data-lesson-id="lesson1"]'
+    );
+    const vControls = document.querySelector(
+      '.vector-controls[data-lesson-id="lesson2"]'
+    );
+    if (vInfo && vControls) {
+      if (lessonId === "lesson1") {
+        vInfo.style.display = "flex";
+        vControls.style.display = "none";
+      } else if (lessonId === "lesson2") {
+        vInfo.style.display = "none";
+        vControls.style.display = "flex";
+      }
+    }
+
+    // 更新画布标题/提示
     const canvasTitle = document.getElementById("canvasTitle");
     const canvasSubtitle = document.getElementById("canvasSubtitle");
     const hint = document.querySelector(".hint");
@@ -298,8 +444,11 @@ canvas.addEventListener("touchend", () => {
       canvasSubtitle.textContent =
         "在这里，我们将看到 u、v 以及它们的和 u + v 和线性组合。";
       hint.textContent =
-        "提示：第 2 课的具体交互即将上线，现在可以先阅读左侧讲解内容。";
+        "提示：调整 a、b 滑块，观察 u、v 以及 w = a·u + b·v 的变化。";
     }
+
+    // 每次切换课程时重绘场景
+    drawScene();
   }
 
   lessonTabs.forEach((tab) => {
@@ -384,6 +533,75 @@ canvas.addEventListener("touchend", () => {
         setActiveLesson("lesson2");
       });
     }
+  }
+
+  // 第 2 课小测逻辑
+  const correctAnswers2 = {
+    l2q1: "B",
+    l2q2: "B",
+    l2q3: "A",
+  };
+
+  const explanations2 = {
+    l2q1: "u + v 表示先走 u 再走 v，从原点到最终终点的箭头。",
+    l2q2: "-2v 表示方向相反、长度为 v 的 2 倍。",
+    l2q3: "2u + 3v = (2·1 + 3·0, 2·0 + 3·1) = (2, 3)。",
+  };
+
+  const quizItems2 = document.querySelectorAll(
+    '.quiz-lesson[data-lesson-id="lesson2"] .quiz-item'
+  );
+
+  quizItems2.forEach((item) => {
+    const qid = item.getAttribute("data-question");
+    const buttons = item.querySelectorAll("button");
+    const feedback = item.querySelector(".quiz-feedback");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userAnswer = btn.getAttribute("data-answer");
+
+        // 清除旧状态
+        buttons.forEach((b) => b.classList.remove("correct", "wrong"));
+        feedback.classList.remove("ok", "bad");
+
+        if (userAnswer === correctAnswers2[qid]) {
+          btn.classList.add("correct");
+          feedback.textContent = "✅ 回答正确！" + " " + explanations2[qid];
+          feedback.classList.add("ok");
+        } else {
+          btn.classList.add("wrong");
+          feedback.textContent = "❌ 再想一想，注意几何意义和坐标计算。";
+          feedback.classList.add("bad");
+        }
+      });
+    });
+  });
+
+  // 第 2 课滑块交互
+  const aSlider = document.getElementById("aSlider");
+  const bSlider = document.getElementById("bSlider");
+  const aValue = document.getElementById("aValue");
+  const bValue = document.getElementById("bValue");
+
+  if (aSlider && aValue) {
+    aSlider.addEventListener("input", () => {
+      aCoeff = parseInt(aSlider.value, 10);
+      aValue.textContent = aCoeff;
+      if (currentLessonId === "lesson2") {
+        drawScene();
+      }
+    });
+  }
+
+  if (bSlider && bValue) {
+    bSlider.addEventListener("input", () => {
+      bCoeff = parseInt(bSlider.value, 10);
+      bValue.textContent = bCoeff;
+      if (currentLessonId === "lesson2") {
+        drawScene();
+      }
+    });
   }
 
   // 初始化默认课

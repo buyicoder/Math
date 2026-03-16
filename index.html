@@ -134,6 +134,37 @@
               <span id="lenDisplay"></span>
             </div>
           </div>
+          <!-- 第 2 课使用的控制区 -->
+          <div class="vector-controls" data-lesson-id="lesson2" style="display: none;">
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">向量 u：</div>
+                <div id="uDisplay"></div>
+              </div>
+              <div class="vc-block">
+                <div class="vc-label">向量 v：</div>
+                <div id="vDisplay"></div>
+              </div>
+            </div>
+            <div class="vc-row sliders">
+              <div class="vc-block">
+                <div class="vc-label">系数 a（作用在 u 上）</div>
+                <input type="range" id="aSlider" min="-3" max="3" step="1" value="1" />
+                <div class="vc-value">a = <span id="aValue">1</span></div>
+              </div>
+              <div class="vc-block">
+                <div class="vc-label">系数 b（作用在 v 上）</div>
+                <input type="range" id="bSlider" min="-3" max="3" step="1" value="1" />
+                <div class="vc-value">b = <span id="bValue">1</span></div>
+              </div>
+            </div>
+            <div class="vc-row">
+              <div class="vc-block">
+                <div class="vc-label">线性组合 w = a·u + b·v：</div>
+                <div id="wDisplay"></div>
+              </div>
+            </div>
+          </div>
           <div class="hint">
             提示：在坐标系中拖动箭头尖端（鼠标左键按住移动），看看 v 和 |v| 如何变化。
           </div>
@@ -194,20 +225,35 @@
           <div class="quiz-lesson" data-lesson-id="lesson2" style="display: none;">
             <div class="quiz-item" data-question="l2q1">
               <p class="quiz-question">
-                Q1：下列哪一种画法，正确表示 u + v？
+                Q1：下列哪一种说法，正确描述 u + v？
               </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. 把两支向量尾巴都放在原点，连成三角形的任意一边。</button>
+                <button data-answer="B">B. 先从原点走 u，再从 u 的终点走 v，从原点到最终终点的箭头。</button>
+                <button data-answer="C">C. 从 v 的终点画一支箭头回到 u 的终点。</button>
+              </div>
               <p class="quiz-feedback"></p>
             </div>
             <div class="quiz-item" data-question="l2q2">
               <p class="quiz-question">
                 Q2：相比 v，-2v 的描述是？
               </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. 方向相同，长度是 v 的 2 倍。</button>
+                <button data-answer="B">B. 方向相反，长度是 v 的 2 倍。</button>
+                <button data-answer="C">C. 方向相反，长度不变。</button>
+              </div>
               <p class="quiz-feedback"></p>
             </div>
             <div class="quiz-item" data-question="l2q3">
               <p class="quiz-question">
                 Q3：若 u = (1,0)，v = (0,1)，则 2u + 3v 等于？
               </p>
+              <div class="quiz-options">
+                <button data-answer="A">A. (2, 3)</button>
+                <button data-answer="B">B. (3, 2)</button>
+                <button data-answer="C">C. (5, 0)</button>
+              </div>
               <p class="quiz-feedback"></p>
             </div>
           </div>

@@ -201,6 +201,37 @@ body {
   color: #f97316;
 }
 
+.vector-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.vc-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vc-block {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.vc-label {
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.vc-value {
+  margin-top: 2px;
+}
+
+.vector-controls input[type="range"] {
+  width: 100%;
+}
+
 .hint {
   font-size: 12px;
   color: #9ca3af;

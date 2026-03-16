@@ -9,6 +9,8 @@
     // 目标向量 x（标准坐标）
     xx: 2,
     xy: 1,
+    // 当前画布拖动对象：'u' | 'v' | 'x'
+    draggingTarget: "x",
   };
 
   function det2(a, b, c, d) {
@@ -149,21 +151,70 @@
     updateSideDisplays();
   }
 
+  function setDraggingTarget(target) {
+    if (target === "u" || target === "v" || target === "x") {
+      state.draggingTarget = target;
+    }
+  }
+
   function updateFromDrag(logicX, logicY) {
-    // 限制范围，避免拖得太远
     const clamp = (v) => Math.max(-6, Math.min(6, v));
     const x = clamp(logicX);
     const y = clamp(logicY);
-    // 当前版本：第 5 课只拖动 x
-    state.xx = x;
-    state.xy = y;
+    if (state.draggingTarget === "u") {
+      state.ux = x;
+      state.uy = y;
+    } else if (state.draggingTarget === "v") {
+      state.vx = x;
+      state.vy = y;
+    } else {
+      state.xx = x;
+      state.xy = y;
+    }
   }
 
   window.Lesson5 = {
     id: "lesson5",
     state,
     draw,
+    setDraggingTarget,
     updateFromDrag,
   };
+
+  // 绑定“拖动 u / v / x”按钮
+  function bindDragTargetButtons() {
+    const btnU = document.getElementById("l5DragU");
+    const btnV = document.getElementById("l5DragV");
+    const btnX = document.getElementById("l5DragX");
+    const cls = "vc-drag-target-active";
+    function setActive(activeBtn) {
+      [btnU, btnV, btnX].forEach((b) => b?.classList.remove(cls));
+      activeBtn?.classList.add(cls);
+    }
+    if (btnU) {
+      btnU.addEventListener("click", () => {
+        setDraggingTarget("u");
+        setActive(btnU);
+      });
+    }
+    if (btnV) {
+      btnV.addEventListener("click", () => {
+        setDraggingTarget("v");
+        setActive(btnV);
+      });
+    }
+    if (btnX) {
+      btnX.addEventListener("click", () => {
+        setDraggingTarget("x");
+        setActive(btnX);
+      });
+      setActive(btnX);
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindDragTargetButtons);
+  } else {
+    bindDragTargetButtons();
+  }
 })();
 

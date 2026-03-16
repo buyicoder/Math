@@ -268,6 +268,33 @@ body {
   width: 100%;
 }
 
+.vc-drag-targets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vc-drag-target {
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vc-drag-target:hover {
+  border-color: #38bdf8;
+}
+
+.vc-drag-target.vc-drag-target-active {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.2);
+  color: #bbf7d0;
+}
+
 .hint {
   font-size: 12px;
   color: #9ca3af;

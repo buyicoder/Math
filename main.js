@@ -586,8 +586,8 @@ canvas.addEventListener("touchend", () => {
 
   if (aSlider && aValue) {
     aSlider.addEventListener("input", () => {
-      aCoeff = parseInt(aSlider.value, 10);
-      aValue.textContent = aCoeff;
+      aCoeff = parseFloat(aSlider.value);
+      aValue.textContent = aCoeff.toFixed(1);
       if (currentLessonId === "lesson2") {
         drawScene();
       }
@@ -596,8 +596,8 @@ canvas.addEventListener("touchend", () => {
 
   if (bSlider && bValue) {
     bSlider.addEventListener("input", () => {
-      bCoeff = parseInt(bSlider.value, 10);
-      bValue.textContent = bCoeff;
+      bCoeff = parseFloat(bSlider.value);
+      bValue.textContent = bCoeff.toFixed(1);
       if (currentLessonId === "lesson2") {
         drawScene();
       }

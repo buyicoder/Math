@@ -114,6 +114,17 @@ function drawGrid() {
   ctx.fillText("y", origin.x + 8, 14);
 }
 
+// 在箭头末端附近绘制不重叠的标签（沿箭头法线方向偏移）
+function drawArrowLabel(start, end, text, color = "#e5e7eb") {
+  const angle = Math.atan2(start.y - end.y, end.x - start.x);
+  const offset = 14;
+  const lx = end.x + offset * Math.cos(angle - Math.PI / 2);
+  const ly = end.y - offset * Math.sin(angle - Math.PI / 2);
+  ctx.fillStyle = color;
+  ctx.font = "12px system-ui";
+  ctx.fillText(text, lx, ly);
+}
+
 function drawLesson1Vector() {
   drawGrid();
 
@@ -156,10 +167,8 @@ function drawLesson1Vector() {
   ctx.closePath();
   ctx.fill();
 
-  // 在附近标注 v
-  ctx.fillStyle = "#e5e7eb";
-  ctx.font = "12px system-ui";
-  ctx.fillText("v", end.x + 6, end.y - 4);
+  // 在附近标注 v（使用偏移，避免与箭头和其他文字重合）
+  drawArrowLabel(origin, end, "v");
 
   updateVectorText();
 }
@@ -244,15 +253,11 @@ function drawLesson2Scene() {
 
   // a·u 段（蓝色淡色）
   drawDashedArrow(origin, auEnd, "rgba(56, 189, 248, 0.6)");
-  ctx.fillStyle = "rgba(56, 189, 248, 0.9)";
-  ctx.font = "11px system-ui";
-  ctx.fillText(`a·u`, auEnd.x + 4, auEnd.y - 4);
+  drawArrowLabel(origin, auEnd, "a·u", "rgba(56, 189, 248, 0.9)");
 
   // 从 a·u 终点走 b·v 段（橙色淡色）
   drawDashedArrow(auEnd, comboEnd, "rgba(251, 146, 60, 0.6)");
-  ctx.fillStyle = "rgba(251, 146, 60, 0.9)";
-  ctx.font = "11px system-ui";
-  ctx.fillText(`b·v`, comboEnd.x + 4, comboEnd.y - 4);
+  drawArrowLabel(auEnd, comboEnd, "b·v", "rgba(251, 146, 60, 0.9)");
 
   // 绘制 u（蓝色）
   ctx.strokeStyle = "#38bdf8";
@@ -275,9 +280,7 @@ function drawLesson2Scene() {
   ctx.lineTo(hx2, hy2);
   ctx.closePath();
   ctx.fill();
-  ctx.fillStyle = "#e5e7eb";
-  ctx.font = "12px system-ui";
-  ctx.fillText("u", uEnd.x + 6, uEnd.y - 4);
+  drawArrowLabel(origin, uEnd, "u");
 
   // 绘制 v（橙色）
   ctx.strokeStyle = "#fb923c";
@@ -298,8 +301,7 @@ function drawLesson2Scene() {
   ctx.lineTo(hx2, hy2);
   ctx.closePath();
   ctx.fill();
-  ctx.fillStyle = "#e5e7eb";
-  ctx.fillText("v", vEnd.x + 6, vEnd.y - 4);
+  drawArrowLabel(origin, vEnd, "v");
 
   // 绘制 w（绿色）
   ctx.strokeStyle = "#22c55e";
@@ -320,8 +322,7 @@ function drawLesson2Scene() {
   ctx.lineTo(hx2, hy2);
   ctx.closePath();
   ctx.fill();
-  ctx.fillStyle = "#e5e7eb";
-  ctx.fillText("w = a·u + b·v", wEnd.x + 6, wEnd.y - 4);
+  drawArrowLabel(origin, wEnd, "w = a·u + b·v");
 
   // 更新右侧显示
   const uDisplay = document.getElementById("uDisplay");
